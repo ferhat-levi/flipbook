@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Katalog</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #111;
+    }
+    #viewer {
+      width: 90%;
+      max-width: 800px;
+      height: 90%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    #viewer img {
+      max-width: 100%;
+      max-height: 100%;
+      border: 2px solid #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.8);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      position: absolute;
+    }
+    #viewer img.active {
+      opacity: 1;
+      position: relative;
+    }
+    .controls {
+      margin-top: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      margin: 0 10px;
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      background: #00c6ff;
+      color: #fff;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #0096cc;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="viewer">
+    <!-- Sayfalar buraya eklenecek -->
+  </div>
+
+  <div class="controls">
+    <button onclick="prevPage()">⬅ Önceki</button>
+    <button onclick="nextPage()">Sonraki ➡</button>
+  </div>
+
+  <script>
+    const totalPages = 33; // toplam sayfa sayısı
+    let currentPage = 1;
+
+    const viewer = document.getElementById("viewer");
+
+    // Sayfaları yükle
+    for (let i = 1; i <= totalPages; i++) {
+      let img = document.createElement("img");
+      img.src = `page${i}.jpg`;
+      if (i === 1) img.classList.add("active");
+      viewer.appendChild(img);
+    }
+
+    const pages = document.querySelectorAll("#viewer img");
+
+    function showPage(page) {
+      pages.forEach((img, index) => {
+        img.classList.remove("active");
+        if (index === page - 1) {
+          img.classList.add("active");
+        }
+      });
+    }
+
+    function nextPage() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        showPage(currentPage);
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        showPage(currentPage);
+      }
+    }
+
+    // Klavye ile kontrol (← →)
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight") nextPage();
+      if (e.key === "ArrowLeft") prevPage();
+    });
+  </script>
+
+</body>
+</html>
+
